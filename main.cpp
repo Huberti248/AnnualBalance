@@ -1,10 +1,4 @@
-﻿/*
-TODO:
-- Put project on github and add link in first line of main.cpp file
-- Allow to copy from table?
-- Speed up launch time?
-- Fix artefacts which happen from time to time?
-*/
+﻿// NOTE: Github repository with project files and libraries included: https://github.com/Huberti248/AnnualBalance
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -939,8 +933,8 @@ int main(int argc, char* argv[])
     for (int i = 0; i < 200; ++i) {
         fonts.push_back(io.Fonts->AddFontFromFileTTF(fontPaths[i].c_str(), 9, 0, ranges.Data));
     }
-    #else
-    fonts.push_back(io.Fonts->AddFontFromFileTTF("res\\fonts-main\\ofl\\aleo\\Aleo-Bold.ttf", 8, 0, ranges.Data));
+#else
+    fonts.push_back(io.Fonts->AddFontFromFileTTF("res\\calibri.ttf", 8, 0, ranges.Data));
 #endif
     io.Fonts->Build();
     bool showDemoWindow = false;
@@ -992,10 +986,12 @@ int main(int argc, char* argv[])
         }
         static bool displayHeaders = true;
         static bool use_work_area = true;
-         static ImGuiTableFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+        static ImGuiTableFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
+#if 1
         ImGui::SetNextWindowPos(use_work_area ? viewport->WorkPos : viewport->Pos);
         ImGui::SetNextWindowSize(use_work_area ? viewport->WorkSize : viewport->Size);
+#endif
 #if 1
         ImGui::PushFont(fonts[currentItem]);
         if (ImGui::Begin("window", 0, flags)) {
@@ -1036,7 +1032,8 @@ int main(int argc, char* argv[])
                             catch (std::invalid_argument e) {
                                 numbers[index] = "ERROR";
                             }
-                            ImGui::Text(numbers[index].c_str());
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &numbers[index], ImGuiInputTextFlags_ReadOnly);
                         }
                         if (j == PROFIT_LOSS_AND_ZERO_COLUMN) {
                             std::string out;
@@ -1055,49 +1052,74 @@ int main(int argc, char* argv[])
                             catch (std::invalid_argument e) {
                                 out = "ERROR";
                             }
-                            ImGui::Text(out.c_str());
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 0 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Suma przychodów to " + toStringWithTwoDecimalPlaces(incomeSum(numbers))).c_str());
+                            std::string out = u8"Suma przychodów to " + toStringWithTwoDecimalPlaces(incomeSum(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 1 && j == SUMMARY_COLUMN) {
                             Result result = minIncome(numbers);
-                            ImGui::Text((u8"Minimalny przychód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Minimalny przychód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 2 && j == SUMMARY_COLUMN) {
                             Result result = maxIncome(numbers);
-                            ImGui::Text((u8"Maksymalny przychód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Maksymalny przychód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 3 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Średni przychód to " + toStringWithTwoDecimalPlaces(averageIncome(numbers))).c_str());
+                            std::string out = u8"Średni przychód to " + toStringWithTwoDecimalPlaces(averageIncome(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 4 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Suma kosztów to " + toStringWithTwoDecimalPlaces(costsSum(numbers))).c_str());
+                            std::string out = u8"Suma kosztów to " + toStringWithTwoDecimalPlaces(costsSum(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 5 && j == SUMMARY_COLUMN) {
                             Result result = minCost(numbers);
-                            ImGui::Text((u8"Minimalny koszt to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Minimalny koszt to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 6 && j == SUMMARY_COLUMN) {
                             Result result = maxCost(numbers);
-                            ImGui::Text((u8"Maksymalny koszt to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Maksymalny koszt to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 7 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Średni koszt to " + toStringWithTwoDecimalPlaces(averageCosts(numbers))).c_str());
+                            std::string out = u8"Średni koszt to " + toStringWithTwoDecimalPlaces(averageCosts(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 8 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Suma dochodów to " + toStringWithTwoDecimalPlaces(revenueSum(numbers))).c_str());
+                            std::string out = u8"Suma dochodów to " + toStringWithTwoDecimalPlaces(revenueSum(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 9 && j == SUMMARY_COLUMN) {
                             Result result = minRevenue(numbers);
-                            ImGui::Text((u8"Minimalny dochód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Minimalny dochód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 10 && j == SUMMARY_COLUMN) {
                             Result result = maxRevenue(numbers);
-                            ImGui::Text((u8"Maksymalny dochód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber)).c_str());
+                            std::string out = u8"Maksymalny dochód to " + toStringWithTwoDecimalPlaces(result.value) + u8" w miesiącu " + std::to_string(result.monthNumber);
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                         if (i == 11 && j == SUMMARY_COLUMN) {
-                            ImGui::Text((u8"Średni dochód to " + toStringWithTwoDecimalPlaces(averageRevenue(numbers))).c_str());
+                            std::string out = u8"Średni dochód to " + toStringWithTwoDecimalPlaces(averageRevenue(numbers));
+                            ImGui::SetNextItemWidth(-FLT_MIN);
+                            ImGui::InputText(("##input" + std::to_string(index)).c_str(), &out, ImGuiInputTextFlags_ReadOnly);
                         }
                     }
                 }

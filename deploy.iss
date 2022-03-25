@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "BilansRoczny"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.2"
 #define MyAppPublisher "Huberti"
 #define MyAppExeName "SacewiczTabliceJednowymiarowe.exe"
 
@@ -20,7 +20,7 @@ DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline
-OutputDir=C:\home\dev\SacewiczTabliceJednowymiarowe\release\1.0
+OutputDir=C:\home\dev\SacewiczTabliceJednowymiarowe\release\{#MyAppVersion}
 OutputBaseFilename=BilansRoczny
 Compression=lzma
 SolidCompression=yes
